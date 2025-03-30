@@ -5,6 +5,15 @@ const Countdown = () => {
   const [birthday, setBirthday] = useState('');
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isActive, setIsActive] = useState(false);
+  const [theme, setTheme] = useState('default');
+
+  const themes = {
+    default: { primary: 'bg-gray-100', secondary: 'bg-gray-200' },
+    blue: { primary: 'bg-blue-100', secondary: 'bg-blue-200' },
+    green: { primary: 'bg-green-100', secondary: 'bg-green-200' },
+    red: { primary: 'bg-red-100', secondary: 'bg-red-200' },
+    yellow: { primary: 'bg-yellow-100', secondary: 'bg-yellow-200' },
+  };
 
   useEffect(() => {
     let interval;
@@ -55,8 +64,26 @@ const Countdown = () => {
     setIsActive(false);
   };
 
+  const handleThemeChange = (themeName) => {
+    setTheme(themeName);
+  };
+
   return (
-    <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg text-center">
+    <div className={`w-full max-w-md p-8 bg-white rounded-lg shadow-lg text-center ${themes[theme].primary}`}>
+      <div className="flex justify-end mb-6">
+        <div className="flex gap-2">
+          {Object.keys(themes).map((themeName) => (
+            <button
+              key={themeName}
+              onClick={() => handleThemeChange(themeName)}
+              className={`w-6 h-6 rounded-full ${themes[themeName].secondary} ${
+                theme === themeName ? 'ring-2 ring-offset-2 ring-black' : ''
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
       <h1 className="text-3xl font-bold mb-6">Countdown to Your Birthday</h1>
 
       <form onSubmit={handleStartCountdown} className="mb-6">
